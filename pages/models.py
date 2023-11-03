@@ -49,12 +49,12 @@ class Lesson(models.Model):
         to=DayOfWeek, on_delete=models.CASCADE, related_name='day')
     num_lesson = models.PositiveIntegerField(null=False, blank=False)
     num_week = models.PositiveIntegerField(null=False, blank=False)
-    is_session = models.BooleanField(default=False, null=False, blank=False)
+    is_session = models.BooleanField(null=False, blank=False)
     group = models.ManyToManyField(to=Group)
     teacher = models.ManyToManyField(to=Teacher)
 
     def __str__(self) -> str:
-        return f"{self.num_lesson}/{self.day}|{self.title}"
+        return f"{self.num_lesson}/{self.day}/{self.num_week}|{self.title[:15]}"
 
     def get_absolute_url(self):
         return reverse("", args=[str(self.pk)])

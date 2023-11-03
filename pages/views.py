@@ -15,7 +15,7 @@ from .models import (Teacher,
 # Create your views here.
 
 
-def get_context(lessons: list, current_model: Group, is_session: bool):
+def get_context(lessons: list, current_model: Group, session_flag: bool):
     lesson_time = {
         '1': '8.30',
         '2': '10.25',
@@ -25,18 +25,19 @@ def get_context(lessons: list, current_model: Group, is_session: bool):
         '6': '18.30',
     }
 
-    lessons = lessons.filter(is_session=is_session)
+    lessons_tar = lessons.filter(is_session=session_flag)
+
     temp = []
     lesson_queryset = [deque(), deque()]
     for week in range(1, 3):
-        lessons = lessons.filter(num_week=week)
+        lessons = lessons_tar.filter(num_week=week)
 
         for n_lesson in range(1, 7):
             temp_lessons = lessons.filter(num_lesson=n_lesson)
 
             temp += [lesson_time[str(n_lesson)]]
 
-            for num_day in range(1, 6):
+            for num_day in range(1, 7):
                 try:
                     lesson = temp_lessons.get(day_id=num_day)
                     temp += [lesson]
@@ -56,9 +57,9 @@ def get_context(lessons: list, current_model: Group, is_session: bool):
 
 def get_group(request: HttpRequest):
     try:
-        if request.POST["is_session"] == 'off':
+        if request.POST["is_session"] == '2':
             is_session = True
-        else:
+        elif request.POST["is_session"] == '1':
             is_session = False
 
         group = Group.objects.get(name=request.POST['group'])
@@ -74,9 +75,9 @@ def get_group(request: HttpRequest):
 
 def get_teacher(request: HttpRequest):
     try:
-        if request.POST["is_session"] == 'off':
+        if request.POST["is_session"] == '2':
             is_session = True
-        else:
+        elif request.POST["is_session"] == '1':
             is_session = False
 
         teacher = Teacher.objects.get(name=request.POST['teacher'])

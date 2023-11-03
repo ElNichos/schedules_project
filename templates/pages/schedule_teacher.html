@@ -3,7 +3,9 @@
 {% block title %}Your schedule{% endblock title %}
 
 {% block content %}
+<h2 class="text-center">Schedule for {{current_model.name}}</h2>
 {% for lesson_week in lessons %}
+<h4 class="text-center">Week #{{forloop.counter}}</h4>
 <table class="table">
     <thead>
         <tr scope="row">
