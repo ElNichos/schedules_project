@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block title %}Your schedule{% endblock title %}
+
+{% block content %}
+{% for lesson_week in lessons %}
+<table class="table">
+    <thead>
+        <tr scope="row">
+            <th scope="col">Time</th>
+            {% for day in days %}
+                <th scope="col">{{ day.name }}</th>
+            {% endfor %}
+        </tr>
+    </thead>   
+    <tbody>
+        {% for lesson_list in lesson_week %}
+        <tr scope="row">
+            {% for lesson in lesson_list %}  
+                {% if lesson is None %}
+                    <td></td>
+                {% else %}
+                    <td>
+                        <div>
+                            {% if forloop.counter == 1 %}
+                                <br>{{ lesson.title }}</br>
+                            {% else %}
+                    
+                            <br><a href="{{ lesson.hyper_link }}">{{ lesson.title }}</a></br>
+                            <br>
+                                {% for teacher in lesson.teacher.all %}
+                                    <a href="{{ teacher.hyper_link }}">{{ teacher.postion }} {{ teacher.name }} </a>
+                                {% endfor %}
+                            </br>
+                                <p class="text-muted">{{ lesson.lesson_type }}</p>
+                            {% endif %}
+                        </div>
+                    </td>
+                {% endif %}
+
+            {% endfor %}
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endfor %}
+{% endblock content %}
