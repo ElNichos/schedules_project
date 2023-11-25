@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block title %}{% endblock title %}
+
+{% block content %}
+<div class="col-md-7" style="margin: auto; margin-top: 20px;">
+    <div class="h-100 p-5 bg-body-tertiary border rounded-5">
+        {% block lesson_crud %}{% endblock lesson_crud %}
+    </div>
+{% endblock content %}

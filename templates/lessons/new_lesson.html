@@ -1,0 +1,24 @@
+{% extends "lessons/lesson_base.html" %}
+
+{% block content %}
+<div class="col-md-7" style="margin: auto; margin-top: 20px;">
+    <div class="h-100 p-5 bg-body-tertiary border rounded-5">
+        <h2 class="display-4">New lesson</h2>
+        {% block lesson_crud %}
+            {% if messages %}
+            <div class="alert alert-danger" role="alert">
+                <ul class="messages">
+                    {% for message in messages %}
+                    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
+            <form method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button class="btn btn-success" type="submit">Save</button>
+            </form>
+        {% endblock lesson_crud %}
+    </div>
+{% endblock content %}

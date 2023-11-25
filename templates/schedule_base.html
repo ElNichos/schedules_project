@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Your schedule{% endblock title %}
+
+{% block content %}
+<h2 class="text-center">Schedule for {{current_model.name}} group</h2>
+
+<div id="carouselIndicators" class="carousel carousel-dark slide" style="margin:auto; height: 100%;">
+    <div class="carousel-inner">
+        {% for lesson_week in lessons %}
+        {% with week=forloop.counter %}
+
+        {% if week == 1 %}
+            <div class="carousel-item active">
+        {% else %}
+            <div class="carousel-item">
+        {% endif %}
+
+        {% if week == 1 %}
+            <h4 class="text-center">First week</h4>
+        {% else %}
+            <h4 class="text-center">Second week</h4>
+        {% endif %}
+        
+        <div class="table-responsive">
+        <table class="table table-hover table-bordered" style=" margin: auto; height: 100%; width: 70%">
+        
+            <thead class="table-dark">
+                <tr scope="row">
+                    <th scope="col" class="text-center">Time</th>
+                        {% for day in days %}
+                            <th scope="col" class="text-center">{{ day.name }}</th>
+                        {% endfor %}
+                    </tr>
+            </thead> 
+
+            <tbody>
+                {% for lesson_list in lesson_week %}
+                {% with num_lesson=forloop.counter %}
+                    <tr scope="row">
+                        {% for lesson in lesson_list %}  
+                            {% if lesson is None and user.is_authenticated and user.is_stuff %}
+                                {% with day_pk=forloop.counter %}
+                                <td>
+                                <form action="{% url "new_lesson" %}" method="get">
+                                    {% csrf_token %}
+                                    <input type="number" name="day_pk" value="{{ day_pk }}" hidden>
+                                    <input type="number" name="num_lesson" value="{{ num_lesson }}" hidden>
+                                    <input type="number" name="num_week" value="{{ week }}" hidden>
+                                    <input type="text" name="is_session" value="{{ is_session }}" hidden>
+                                    <input type="text" name="group" value="{{ current_model.name }}" hidden>
+                                    <input type="text" name="teacher" value="{{ current_model.name }}" hidden>
+                                    <input class="btn btn-success" type="submit" value="create">
+                                </form>
+                            </td>
+                                {% endwith %}
+                                {% else %}
+                                <td>
+                                    <div>
+                                        {% if forloop.counter == 1 %}
+                                            {{ lesson.title }}
+                                        {% else %}
+                                            {% block schedules_content %}
+                                            {% endblock schedules_content %}
+                                        {% endif %}
+                                    </div>
+                                </td>
+                            {% endif %}
+                        {% endfor %}
+                        {% endwith %}
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% endwith %}
+      </div>
+      </div>
+      {% endfor %}
+      
+
+    <! -- Кнопки перелистывания --> 
+    <button class="carousel-control-prev" type="button" data-bs-target="#carouselIndicators" data-bs-slide="prev">
+      <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carouselIndicators" data-bs-slide="next">
+      <span class="visually-hidden">Next</span>
+    </button>
+</div>
+<div style="margin:auto" class="text-center">
+    {% if user.is_authenticated and user.is_stuff and user.university == university%}
+        <br><a href="{% url "new_lesson" %}" class="btn btn-success">Create new lesson</a></br>
+    {% endif %}
+</div>
+<script src="{% static 'pages/day_time_selctor.js' %}"></script>
+{% endblock content %}

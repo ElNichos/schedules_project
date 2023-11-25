@@ -1,0 +1,15 @@
+{% extends "lessons/lesson_base.html" %}
+
+{% block content %}
+<div class="col-md-7" style="margin: auto; margin-top: 20px;">
+    <div class="h-100 p-5 bg-body-tertiary border rounded-5">
+        {% block lesson_crud %}
+            <h2 class="display-4">Edit lesson</h2>
+            <form method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button class="btn btn-success" type="submit">Update</button>
+            </form>
+        {% endblock lesson_crud %}
+    </div>
+{% endblock content %}

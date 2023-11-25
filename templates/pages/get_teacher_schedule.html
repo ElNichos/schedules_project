@@ -1,26 +1,53 @@
 {% extends "base.html" %}
 
-{% block title %}Group{% endblock title %}
+{% block title %}Teacher{% endblock title %}
 
 {% block content %}
-<h2>Choose your group</h2>
-<form method="post" class="container-fluid justify-content-start">
+<div class="col-md-7" style="margin: auto; margin-top: 20px;">
+<div class="h-100 p-5 bg-body-tertiary border rounded-5">
+<h2 class="display-4">Choose your schedule</h2>
+
+<form method="get">
     {% csrf_token %}
     <fieldset>
+    <div class="row mb-3">
+        <div class="col-sm-3">
+        <label for="TeacherList" class="form-label">Teacher name</label>
+        <input class="form-control" list="teachers_list" id="TeacherList" placeholder="Type to search..." name='teacher'>
+        <datalist id="teachers_list">
+            {% for teacher in teachers_list %}
+                <option value="{{teacher}}">
+            {% endfor %}
+        </datalist>
+    </div>
+    <div class="col-sm-3">
+        <label for="UniversityList" class="form-label">Choose your university</label>
+        {% if user.is_authenticated and user.is_stuff %}
+        <input class="form-control" id="UniversityList" name='university' type="text" value="{{user.university}}">
+        {% else %}
+        <input class="form-control" list="university_list" id="UniversityList" placeholder="Type to search..." name='university'>
+            <datalist id="university_list">
+                {% for university in university_list %}
+                    <option value="{{university}}">
+                {% endfor %}
+            </datalist>
+        {% endif %}
+    </div>
+    </div>
 
-        <div class="input-group mb-3">
-            <input type="text" class="" placeholder="Teacher's name" 
-            aria-label="Teacher's name" aria-describedby="basic-addon1" name='teacher'>
-        </div>
-
-
-        <select class="form-select" aria-label="Default select example" name="is_session">
+    <div class="row mb-3">
+        <div class="col-sm-3">
+        <label for="Semester/Session" class="form-label">Semester/Session</label>
+        <select class="form-select" aria-label="Default select example" name="is_session" id="Semester/Session">
             <option selected>Choose your schedule</option>
             <option value="1">Semester</option>
             <option value="2">Session</option>
         </select>
-          <br></br>
+    </div>
+    </div>
     </fieldset>
     <input class="btn btn-success" type="submit" value="Get schedule!">
 </form>
+</div>
+</div>
 {% endblock content %}
