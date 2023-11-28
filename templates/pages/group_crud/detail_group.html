@@ -1,0 +1,11 @@
+{% extends "crud_base.html" %}
+
+{% block crud %}
+    <h2 class="display-6 text-center">{{ group.name }}</h2>
+    <h2 class="display-6">{{ group.university }}</h2>
+    <div class="text-center">
+        <a href="{% url 'edit_group' group.pk %}" class="col-2 btn btn-primary">Edit</a>
+        <a href="{% url 'delete_group' group.pk %}" class="col-2 btn btn-primary">Delete</a>
+        <a href="{% url 'new_group' %}" class=" col-2 btn btn-primary">Create another one</a>
+    </div>
+{% endblock crud %}

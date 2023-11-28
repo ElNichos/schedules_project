@@ -4,7 +4,7 @@
 {% block title %}Your schedule{% endblock title %}
 
 {% block content %}
-<h2 class="text-center">Schedule for {{current_model.name}} group</h2>
+<h2 class="text-center">Schedule for {{current_model.name}}</h2>
 
 <div id="carouselIndicators" class="carousel carousel-dark slide" style="margin:auto; height: 100%;">
     <div class="carousel-inner">
@@ -87,10 +87,17 @@
       <span class="visually-hidden">Next</span>
     </button>
 </div>
-<div style="margin:auto" class="text-center">
-    {% if user.is_authenticated and user.is_stuff and user.university == university%}
-        <br><a href="{% url "new_lesson" %}" class="btn btn-success">Create new lesson</a></br>
-    {% endif %}
-</div>
 <script src="{% static 'pages/day_time_selctor.js' %}"></script>
 {% endblock content %}
+
+{% block footer %}
+<footer class="fixed-bottom bg-body-tertiary">
+    <div class="text-lg-center">
+    {% if user.is_authenticated and user.is_stuff%}
+        <a href="{% url "new_lesson" %}" class="col-3 btn btn-success">Create new lesson</a>
+        <a href="{% url "new_group" %}" class="col-3 btn btn-success">Create new group</a>
+        <a href="{% url "new_teacher" %}" class="col-3 btn btn-success">Create new teacher</a>
+    {% endif %}
+    </div>
+</footer>
+{% endblock footer %}

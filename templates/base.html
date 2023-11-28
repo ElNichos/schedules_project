@@ -8,45 +8,100 @@
     <link rel="stylesheet" href="styles.css">
   </head>
   <header>
-    <nav class="navbar navbar-expand-lg bg-body-tertiary">
-      <div class="container-fluid">
+    <nav class="navbar bg-body-tertiary">
+      <div class="container-fluid justify-content">
+
         <a class="navbar-brand" href="{% url "home" %}">YOUR SCHEDULES</a>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-            <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="{% url "get_teacher" %}">Teacher's</a>
+
+        <div class="navbar navbar-expand-lg">
+          <ul class="navbar-nav">
+            <li class="nav-item"><a class="nav-link active" aria-current="page" href="{% url "get_teacher" %}">Teacher's</a></li>
+            <li class="nav-item"><a class="nav-link active" aria-current="page" href="{% url "get_group" %}">Students's</a></li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                {% if user.is_authenticated %}
+                  {{user.username}}
+                  {% else %}
+                  Guest
+                {% endif %}
+              </a>
+              <ul class="dropdown-menu">
+                {% if not user.is_authenticated %}
+                  <li><a class="dropdown-item" href="{% url "login" %}">Log in</a></li>
+                {% endif %}
+                {% if user.is_authenticated %}
+                  <li><a class="dropdown-item" href="{% url "edit_profile" user.pk%}">Edit profile</a></li>
+                  <li><a class="dropdown-item" href="{% url "logout" %}">Log out</a></li>
+                {% endif %}
+                  <li><hr class="dropdown-divider"></li>
+                {% if not user.is_authenticated %}
+                  <li><a class="dropdown-item" href="{% url "signup" %}">Sign up</a></li>
+                {% endif %}
+              </div>
             </li>
-            <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="{% url "get_group" %}">Students's</a>
-            </li>
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              {% if user.is_authenticated %}
-                {{user.username}}
-                {% else %}
-                Guest
-              {% endif %}
-            </a>
-            <ul class="dropdown-menu">
-              {% if not user.is_authenticated %}
-                <li><a class="dropdown-item" href="{% url "login" %}">Log in</a></li>
-              {% endif %}
-              {% if user.is_authenticated %}
-                <li><a class="dropdown-item" href="{% url "edit_profile" user.pk%}">Edit profile</a></li>
-                <li><a class="dropdown-item" href="{% url "logout" %}">Log out</a></li>
-              {% endif %}
-                <li><hr class="dropdown-divider"></li>
-              {% if not user.is_authenticated %}
-                <li><a class="dropdown-item" href="{% url "signup" %}">Sign up</a></li>
-              {% endif %}
+          </ul>
+        
+        {% if user.is_authenticated%}
+        <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+          <div class="offcanvas-header">
+            <h5 class="text-centre" id="offcanvasNavbarLabel">Action Panel</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+              <li class="nav-item">
+                <a class="btn btn-success nav-link" aria-current="page" href="{% url "new_group" %}">New group</a>
+              </li>
+              <li class="nav-item">
+                <a class="btn btn-success nav-link" href="{% url "new_teacher" %}">New teacher</a>
+              </li>
+              </li>
             </ul>
-          </li>
+            <form role="search" method="get" action="{% url "search_model" %}">            
+              {% csrf_token %}
+              <fieldset>
+              <label for="ModelSearch" class="form-label">What you want to check?</label>
+                <select class="form-select" aria-label="Default select example" name="model" id="ModelSearch">
+                    <option selected value="Group">Group</option>
+                    <option value="Teacher">Teacher</option>
+                </select>
+              <div class="input-group">
+              <input class="form-control" type="search" placeholder="Search" aria-label="Search" name="name">
+              <button class="btn btn-outline-success" type="submit">Search</button>
+              </div>
+              {% if messages %}
+              <div class="{{message_class}}" role="alert">
+                  <ul class="messages">
+                      {% for message in messages %}
+                      <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                      {% endfor %}
+                  </ul>
+              </div>
+              {% endif %}
+            </fieldset>
+            </form>
+          </div>
         </div>
+        {% else %}
+        <button type="button" class="btn btn-secondary" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="Tooltip on bottom">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        {% endif %}
       </div>
-    </nav>
+      </div>
+  </nav>
+
+
+
+
+
   </header>
   <body>
     {% block content %}{% endblock content %}
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
   </body>
+  {% block footer %}{% endblock footer %}
 </html>

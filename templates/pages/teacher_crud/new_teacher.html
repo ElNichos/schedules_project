@@ -3,7 +3,7 @@
 {% block content %}
 <div class="col-md-7" style="margin: auto; margin-top: 20px;">
     <div class="h-100 p-5 bg-body-tertiary border rounded-5">
-        <h2 class="display-4">New lesson</h2>
+        <h2 class="display-4">New teacher</h2>
         {% block crud %}
             {% if messages %}
             <div class="alert alert-danger" role="alert">
@@ -16,12 +16,7 @@
             {% endif %}
             <form method="post">
                 {% csrf_token %}
-                {% for field in form %}
-                {{field.label_tag}}
-                <div>
-                    {{field}}
-                </div>
-                {% endfor %}
+                {{ form.as_p }}
                 <button class="btn btn-success" type="submit">Save</button>
             </form>
         {% endblock crud %}

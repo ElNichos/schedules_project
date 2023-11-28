@@ -36,11 +36,11 @@ class Teacher(models.Model):
         return self.name
 
     def get_absolute_url(self):
-        return reverse("", args=[str(self.pk)])
+        return reverse("detail_teacher", args=[str(self.pk)])
 
 
 class Group(models.Model):
-    name = models.CharField(max_length=15)
+    name = models.CharField(max_length=15, unique=True)
     email = models.EmailField()
     university = models.ForeignKey(
         to=University, on_delete=models.CASCADE, null=False, blank=False)
@@ -49,4 +49,4 @@ class Group(models.Model):
         return self.name
 
     def get_absolute_url(self):
-        return reverse("", args=[str(self.pk)])
+        return reverse("detail_group", args=[str(self.pk)])

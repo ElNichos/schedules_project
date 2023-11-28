@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Schedules site{% endblock title %}
+
+{% block content %}
+<div class="col-md-7" style="margin: auto; margin-top: 20px;">
+    <div class="h-100 p-5 bg-body-tertiary border rounded-5">
+    <h2 class="display-4 text-center">Your schedules site</h2>
+    <p class="display-6 text-center">Welcome to the Schedules site. 
+       Here you can track your lessons schedules via this site or via our connected telegram bot.
+       Study/teach with comfort. 
+       Good luck! :) 
+    </p>
+    <br></br>
+    <div class="row text-center">
+      <div class="col-sm-6 mb-3 mb-sm-0">
+        <div class="card" style="margin:auto;">
+            <img src="{% static "image/student_img.jfif" %}" class="card-img-top">
+            <div class="card-body">
+              <h5 class="card-title">Student</h5>
+              <a href="{% url "get_group" %}" class="btn btn-primary">Get my schedule</a>
+            </div>
+        </div>
+      </div>
+
+      <div class="col-sm-6">
+        <div class="card" style="margin:auto;">
+            <img src="{% static "image/teacher_img.jfif" %}" class="card-img-top">
+            <div class="card-body">
+              <h5 class="card-title">Teacher</h5>
+              <a href="{% url "get_teacher" %}" class="btn btn-primary">Get my schedule</a>
+        </div>
+      </div>
+    </div>
+</div>
+</div>
+</div>
+{% endblock content %}

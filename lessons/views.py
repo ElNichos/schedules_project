@@ -1,16 +1,14 @@
 from typing import Any
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth import get_user
-from django.forms.models import BaseModelForm
 from django.shortcuts import redirect
 from django.views.generic import CreateView, DeleteView, DetailView, UpdateView
 from django.views.generic.edit import FormMixin
-from django.urls import reverse_lazy
 from django.contrib import messages
 
 from .models import Lesson
 from pages.models import DayOfWeek, Group, Teacher
-from .forms import LessonCretionForm
+from .forms import LessonCretionForm, GenericForm
 from pages.views import get_uri
 
 # Create your views here.
@@ -40,8 +38,8 @@ class DetailLessonView(DetailView, LoginRequiredMixin, UserPassesTestMixin):
 class UpdateLessonView(UpdateView, LoginRequiredMixin, UserPassesTestMixin):
     model = Lesson
     template_name = "lessons/update_lesson.html"
-    fields = ['title', 'hyper_link', 'lesson_type', 'teacher',]
     login_url = 'login'
+    form_class = GenericForm
 
 
     def get_success_url(self) -> str:
@@ -81,7 +79,6 @@ class CreateLessonView(CreateView):
                 'num_lesson': params['num_lesson'],
                 'num_week': params['num_week'],
                 'is_session' : True if params['is_session'] == 'True' else False,
-                # 'group' : Group.objects.get(id = params['group_pk']),
             }
 
             try:
