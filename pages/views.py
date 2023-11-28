@@ -7,7 +7,8 @@ from django.template import loader
 from django.http import HttpRequest, HttpResponse
 from django.views.generic import CreateView, DeleteView, UpdateView, DetailView
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.utils import timezone
 
 from .models import (Teacher,
                      Group,
@@ -29,6 +30,9 @@ PAGES_TEMPLATES = 'pages/schedules_views_tempaltes/'
 
 global SCHEDULES_TO_REDIRECT
 SCHEDULES_TO_REDIRECT = ''
+
+def get_current_day_lesson():
+    pass
 
 def get_context(lessons: list, current_model: Group, session_flag: bool, university_id: int):
 
@@ -154,6 +158,8 @@ def check_instanse_view(request:HttpRequest):
                 messages.success(request=request, message=f'Teacher {name} exists!')
     return render(request, template_name="pages/schedules_views_tempaltes/home.html")
 
+def objects_table_view(request:HttpRequest):
+    pass
 
 
 # group-model CRUD
