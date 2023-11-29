@@ -11,6 +11,7 @@ urlpatterns = [
     path('teacher/', get_teacher_view, name='get_teacher'),
     path('search/', check_instanse_view, name='search_model'),
     path('table/', objects_table_view, name='get_table'),
+    path('week_config/', week_config_view, name='week_config'),
 
     #group crud
     path('new_group/', CreateGroupView.as_view(), name='new_group'),

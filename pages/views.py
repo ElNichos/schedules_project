@@ -8,7 +8,7 @@ from django.http import HttpRequest, HttpResponse
 from django.views.generic import CreateView, DeleteView, UpdateView, DetailView
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.utils import timezone
+from django.utils.timezone import datetime, timedelta
 
 from .models import (Teacher,
                      Group,
@@ -23,16 +23,39 @@ from .forms import GroupCreationForm, TeacherCreationForm, UpdateTeacherForm, Up
 global GROUP_TEMPLATES
 global TEACHER_TEMPLATES
 global PAGES_TEMPLATES
+global SCHEDULES_TO_REDIRECT
+global NUM_WEEK
 
 GROUP_TEMPLATES = 'pages/group_crud/'
 TEACHER_TEMPLATES = 'pages/teacher_crud/'
 PAGES_TEMPLATES = 'pages/schedules_views_tempaltes/'
-
-global SCHEDULES_TO_REDIRECT
 SCHEDULES_TO_REDIRECT = ''
+NUM_WEEK = 1
+
+def week_config_view(request:HttpRequest):
+    global NUM_WEEK
+    print(int(request.POST['week']))
+    NUM_WEEK = int(request.POST['week'])
+    messages.success(request=request, message=f"Origin week is {NUM_WEEK}")
+    return render(request, template_name="pages/schedules_views_tempaltes/home.html")
+
 
 def get_current_day_lesson():
-    pass
+    current_day = datetime.now().strftime('%A')
+    current_num_day = datetime.now().weekday() + 2
+    if current_day == 'Sunday':
+        global NUM_WEEK
+        if NUM_WEEK == 2:
+           NUM_WEEK = 1 
+        else:
+            NUM_WEEK += 1
+
+    start_day = timedelta(hours=8)
+    lesson_time = timedelta(hours=1, minutes=30)
+    current_time = timedelta(hours=int(datetime.now().strftime('%H')), minutes=int(datetime.now().strftime('%M')))
+    current_num_lesson = (current_time - start_day) // lesson_time
+    return (current_num_lesson, current_day, NUM_WEEK, current_num_day)
+  
 
 def get_context(lessons: list, current_model: Group, session_flag: bool, university_id: int):
 
@@ -65,19 +88,24 @@ def get_context(lessons: list, current_model: Group, session_flag: bool, univers
 
             lesson_queryset[week - 1].append(temp)
             temp = []
+    current_num_lesson, _ , NUM_WEEK, current_num_day = get_current_day_lesson()
     context = {
+        #schedules table
         "university": University.objects.get(pk=university_id),
         "days": DayOfWeek.objects.all(),
         "current_model": current_model,
         "lessons": lesson_queryset,
         "weeks": range(1, 2),
         'is_session': str(session_flag),
+        #highlighting current time
+        'current_num_lesson':current_num_lesson,
+        'current_day':current_num_day,
+        'NUM_WEEK':NUM_WEEK,
     }
     return context
 
 
 def get_group_view(request: HttpRequest):
-    print(f"***{PAGES_TEMPLATES}***")
     try:
         if request.GET["is_session"] == '2':
             is_session = True

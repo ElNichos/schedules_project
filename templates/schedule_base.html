@@ -11,7 +11,7 @@
         {% for lesson_week in lessons %}
         {% with week=forloop.counter %}
 
-        {% if week == 1 %}
+        {% if week == NUM_WEEK %}
             <div class="carousel-item active">
         {% else %}
             <div class="carousel-item">
@@ -40,35 +40,53 @@
                 {% with num_lesson=forloop.counter %}
                     <tr scope="row">
                         {% for lesson in lesson_list %}  
+                        {% with day_pk=forloop.counter %}
                             {% if lesson is None and user.is_authenticated and user.is_stuff %}
-                                {% with day_pk=forloop.counter %}
-                                <td>
-                                <form action="{% url "new_lesson" %}" method="get">
-                                    {% csrf_token %}
-                                    <input type="number" name="day_pk" value="{{ day_pk }}" hidden>
-                                    <input type="number" name="num_lesson" value="{{ num_lesson }}" hidden>
-                                    <input type="number" name="num_week" value="{{ week }}" hidden>
-                                    <input type="text" name="is_session" value="{{ is_session }}" hidden>
-                                    <input type="text" name="group" value="{{ current_model.name }}" hidden>
-                                    <input type="text" name="teacher" value="{{ current_model.name }}" hidden>
-                                    <input class="btn btn-success" type="submit" value="create">
-                                </form>
-                            </td>
-                                {% endwith %}
-                                {% else %}
-                                <td>
-                                    <div>
-                                        {% if forloop.counter == 1 %}
-                                            {{ lesson.title }}
-                                        {% else %}
-                                            {% block schedules_content %}
-                                            {% endblock schedules_content %}
-                                        {% endif %}
-                                    </div>
-                                </td>
-                            {% endif %}
-                        {% endfor %}
+                                {% if current_day == day_pk and current_num_lesson == num_lesson and week == NUM_WEEK%}
+                                    <td class="table-info table-active">
+                                        <form action="{% url "new_lesson" %}" method="get">
+                                            {% csrf_token %}
+                                            <input type="number" name="day_pk" value="{{ day_pk }}" hidden>
+                                            <input type="number" name="num_lesson" value="{{ num_lesson }}" hidden>
+                                            <input type="number" name="num_week" value="{{ week }}" hidden>
+                                            <input type="text" name="is_session" value="{{ is_session }}" hidden>
+                                            <input type="text" name="group" value="{{ current_model.name }}" hidden>
+                                            <input type="text" name="teacher" value="{{ current_model.name }}" hidden>
+                                            <input class="btn btn-success" type="submit" value="create">
+                                        </form>
+                                    </td>
+                                    {% else %}
+                                    <td>
+                                        <form action="{% url "new_lesson" %}" method="get">
+                                            {% csrf_token %}
+                                            <input type="number" name="day_pk" value="{{ day_pk }}" hidden>
+                                            <input type="number" name="num_lesson" value="{{ num_lesson }}" hidden>
+                                            <input type="number" name="num_week" value="{{ week }}" hidden>
+                                            <input type="text" name="is_session" value="{{ is_session }}" hidden>
+                                            <input type="text" name="group" value="{{ current_model.name }}" hidden>
+                                            <input type="text" name="teacher" value="{{ current_model.name }}" hidden>
+                                            <input class="btn btn-success" type="submit" value="create">
+                                        </form>
+                                    </td>
+                                    {% endif %}
+                            {% else %}
+                                    {% if forloop.counter == 1 %}
+                                        <td>
+                                            <div>
+                                                {{ lesson.title }}
+                                            </div>
+                                        </td>
+                                    {% else %}
+                                        {% block schedules_content %}
+                                        {{week}}
+                                        {{day_pk}}
+                                        {{num_lesson}}
+                                        {% endblock schedules_content %}
+                                    {% endif %}
+                                {% endif %}
                         {% endwith %}
+                        {% endfor %}
+                    {% endwith %}
                     </tr>
                 {% endfor %}
             </tbody>
