@@ -1,7 +1,7 @@
 from collections import deque
 from typing import Any
 
-
+from django.contrib.auth import get_user
 from django.shortcuts import render, redirect
 from django.template import loader
 from django.http import HttpRequest, HttpResponse
@@ -158,8 +158,19 @@ def check_instanse_view(request:HttpRequest):
                 messages.success(request=request, message=f'Teacher {name} exists!')
     return render(request, template_name="pages/schedules_views_tempaltes/home.html")
 
+
 def objects_table_view(request:HttpRequest):
-    pass
+    model = request.GET.get('model')
+    user = get_user(request=request)
+    if model == 'Group':
+        objects = Group.objects.filter(university = user.university)
+    elif model == 'Teacher':    
+        objects = Teacher.objects.filter(university = user.university)
+
+    global SCHEDULES_TO_REDIRECT
+    SCHEDULES_TO_REDIRECT = request.build_absolute_uri()
+
+    return render(request, template_name="pages/schedules_views_tempaltes/object_table.html", context={'model':model, 'objects':objects,})
 
 
 # group-model CRUD

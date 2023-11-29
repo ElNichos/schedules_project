@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="styles.css">
   </head>
   <header>
-    <nav class="navbar bg-body-tertiary">
+    <nav class="navbar bg-success">
       <div class="container-fluid justify-content">
 
         <a class="navbar-brand" href="{% url "home" %}">YOUR SCHEDULES</a>
@@ -81,6 +81,21 @@
                   </ul>
               </div>
               {% endif %}
+            </fieldset>
+            </form>
+
+
+            <form method="get" action="{% url "get_table" %}">            
+              {% csrf_token %}
+              <fieldset>
+              <label for="ModelSearch" class="form-label">What you want to check?</label>
+                <select class="form-select" aria-label="Default select example" name="model" id="ModelSearch">
+                    <option selected value="Group">Group</option>
+                    <option value="Teacher">Teacher</option>
+                </select>
+              <div class="input-group">
+              <button class="btn btn-outline-success" type="submit">Get table</button>
+              </div>
             </fieldset>
             </form>
           </div>
