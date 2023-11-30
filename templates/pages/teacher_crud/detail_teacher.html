@@ -8,7 +8,7 @@
     </p>
     <div class="text-center">
     <a href="{% url 'edit_teacher' teacher.pk %}" class="col-2 btn btn-primary">Edit</a>
-    <a href="{% url 'delete_teacher' teacher.pk %}" class="col-2 btn btn-primary">Delete</a>
+    <a href="{% url 'delete_teacher' teacher.pk %}" class="col-2 btn btn-danger">Delete</a>
     <a href="{% url 'new_teacher' %}" class=" col-2 btn btn-primary">Create another one</a>
     </div>
 {% endblock crud %}

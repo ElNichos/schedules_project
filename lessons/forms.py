@@ -21,11 +21,11 @@ class LessonCretionForm(forms.ModelForm):
     def is_valid(self) -> bool:
         base_validation = super().is_valid() 
 
-        groups = self.cleaned_data['group']
-        day = self.cleaned_data['day']
-        num_lesson = self.cleaned_data['num_lesson']
-        num_week = self.cleaned_data['num_week']
-        is_session = self.cleaned_data['is_session'] 
+        groups = self.cleaned_data.get('group')
+        day = self.cleaned_data.get('day')
+        num_lesson = self.cleaned_data.get('num_lesson')
+        num_week = self.cleaned_data.get('num_week')
+        is_session = self.cleaned_data.get('is_session')
 
         for group in groups:
             try:

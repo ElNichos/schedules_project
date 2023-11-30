@@ -6,6 +6,9 @@ from .views import *
 urlpatterns = [
     # homepage view
     path('', TemplateView.as_view(template_name="pages/schedules_views_tempaltes/home.html"), name='home'),
+    path('about/', TemplateView.as_view(template_name="pages/schedules_views_tempaltes/about.html"), name='about'),
+    path('contacts/', TemplateView.as_view(template_name="pages/schedules_views_tempaltes/contacts.html"), name='contacts'),
+   
     # schedules views for non-authenticated users
     path('group/', get_group_view, name='get_group'),
     path('teacher/', get_teacher_view, name='get_teacher'),

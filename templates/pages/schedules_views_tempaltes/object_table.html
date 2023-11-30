@@ -9,11 +9,11 @@
                 <th scope="row">{{object.name}}</th>
                 {% if model == 'Group' %}
                     <td><a href="{% url 'edit_group' object.pk %}" class="btn btn-primary">Edit</a></td>
-                    <td><a href="{% url 'delete_group' object.pk %}" class="btn btn-primary">Delete</a></td>
+                    <td><a href="{% url 'delete_group' object.pk %}" class="btn btn-danger">Delete</a></td>
                     <td><a href="{% url 'detail_group' object.pk %}" class="btn btn-primary">Details</a></td>
                 {% elif model == 'Teacher' %}
                     <td><a href="{% url 'edit_teacher' object.pk %}" class="btn btn-primary">Edit</a></td>
-                    <td><a href="{% url 'delete_teacher' object.pk %}" class="btn btn-primary">Delete</a></td>
+                    <td><a href="{% url 'delete_teacher' object.pk %}" class="btn btn-danger">Delete</a></td>
                     <td><a href="{% url 'detail_teacher' object.pk %}" class="btn btn-primary">Details</a></td>
                 {% endif %}
             </tr>

@@ -7,6 +7,7 @@ from django.views.generic.edit import FormMixin
 from django.contrib import messages
 
 from .models import Lesson
+from pages.models import University
 from pages.models import DayOfWeek, Group, Teacher
 from .forms import LessonCretionForm, GenericForm
 from pages.views import get_uri
@@ -66,6 +67,11 @@ class CreateLessonView(CreateView):
         request = self.request
         params = request.GET
         user = get_user(request)
+        try:
+            user.university
+        except AttributeError:
+            user.university = University.objects.get(pk=1)
+
         if not params:
             context = {
                  'author': user,

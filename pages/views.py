@@ -34,7 +34,6 @@ NUM_WEEK = 1
 
 def week_config_view(request:HttpRequest):
     global NUM_WEEK
-    print(int(request.POST['week']))
     NUM_WEEK = int(request.POST['week'])
     messages.success(request=request, message=f"Origin week is {NUM_WEEK}")
     return render(request, template_name="pages/schedules_views_tempaltes/home.html")
@@ -50,10 +49,20 @@ def get_current_day_lesson():
         else:
             NUM_WEEK += 1
 
-    start_day = timedelta(hours=8)
-    lesson_time = timedelta(hours=1, minutes=30)
+    lesson_time = timedelta(hours=1, minutes=30 + 20)
     current_time = timedelta(hours=int(datetime.now().strftime('%H')), minutes=int(datetime.now().strftime('%M')))
-    current_num_lesson = (current_time - start_day) // lesson_time
+    lesson_time = [
+        [timedelta(hours=0), timedelta(hours=10, minutes=5)],
+        [timedelta(hours=10, minutes=5), timedelta(hours=11, minutes=55)],
+        [timedelta(hours=11, minutes=55), timedelta(hours=13, minutes=55)],
+        [timedelta(hours=13, minutes=55), timedelta(hours=15, minutes=50)],
+        [timedelta(hours=15, minutes=50), timedelta(hours=18, minutes=10)],
+        [timedelta(hours=18, minutes=10), timedelta(hours=23, minutes=55)],
+    ]
+    for idx, [t_min, t_max] in enumerate(lesson_time):
+        if (t_min <= current_time <= t_max):
+            current_num_lesson = idx + 1
+            break
     return (current_num_lesson, current_day, NUM_WEEK, current_num_day)
   
 
@@ -160,7 +169,10 @@ def get_teacher_view(request: HttpRequest):
 
 
 def get_uri():
-    return SCHEDULES_TO_REDIRECT
+    if not SCHEDULES_TO_REDIRECT:
+        return "/"
+    else:
+        return SCHEDULES_TO_REDIRECT
 
 
 def check_instanse_view(request:HttpRequest):
@@ -190,6 +202,10 @@ def check_instanse_view(request:HttpRequest):
 def objects_table_view(request:HttpRequest):
     model = request.GET.get('model')
     user = get_user(request=request)
+    try:
+        user.university
+    except AttributeError:
+        user.university = University.objects.get(pk=1)
     if model == 'Group':
         objects = Group.objects.filter(university = user.university)
     elif model == 'Teacher':    

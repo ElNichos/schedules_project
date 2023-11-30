@@ -10,5 +10,5 @@
 
         <p>{{ lesson.lesson_type }} | Week: {{ lesson.num_week }} | Day: {{ lesson.day }} | Number: {{ lesson.num_lesson }}</p>
     <a href="{% url "update_lesson" lesson.pk%}" class="btn btn-primary">Edit</a>
-    <a href="{% url "delete_lesson" lesson.pk%}" class="btn btn-primary">Delete</a>
+    <a href="{% url "delete_lesson" lesson.pk%}" class="btn btn-danger">Delete</a>
 {% endblock crud %}
