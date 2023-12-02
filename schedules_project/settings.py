@@ -135,3 +135,4 @@ AUTH_USER_MODEL = "users.CustomUser"
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
 ]
+ALLOWED_HOSTS = ['*',]
