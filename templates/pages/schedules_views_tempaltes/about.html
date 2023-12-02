@@ -4,26 +4,37 @@
 <div class="col-md-7" style="margin: auto; margin-top: 40px;">
   <div class="h-100 p-5 bg-body-tertiary border rounded-5">
 <h2 class="display-6 text-center">About project</h2>
-<p>Here's my text</p>
+<p>This site is designed to generate and track class schedules for educational institutions. 
+  The project is developed for the sole purpose of learning the Django framework and may not be exploitable. 
+  This is a beta version of a non-commercial project, so the author does not bear any responsibility for possible technical failures.</p>
 <div class="accordion accordion-flush" id="accordionFlushExample">
     <div class="accordion-item">
       <h2 class="accordion-header">
         <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
-          Users guide
+          Non-authorized user's guide
         </button>
       </h2>
       <div id="flush-collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
-        <p>Some advices</p>
+        <p>It is assumed that a non-authorized user is a student or teacher. 
+          Such a user can only view the schedule.</p> 
+        <p>To view the schedule, go to the "Teacher's" or "Students's" tab on the navigation bar or use the cards on the home page.
+          Then it is necessary to fill in the form by entering the name of the group/teacher and your institution. You should also specify: semester or session schedule.
+          After submitting the form you will be redirected to the schedule page.</p>
+        <p>To switch the week of the schedule, click on the edge of the page.</p>
+        <p>When viewing the schedule, the current lesson will be highlighted in blue color.</p>
       </div>
     </div>
     <div class="accordion-item">
       <h2 class="accordion-header">
         <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
-          Telegram bot guide
+          Authorized user's guide
         </button>
       </h2>
       <div id="flush-collapseTwo" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
-        <p>Some advices</p>
+        <p>If the user is authorized, in addition to viewing schedules, he/she can also create teacher, group and lesson objects.</p>
+        <p>On the sidebar you can access "Action panel". Here you can create students and teachers objects, check if there are objects 
+          in the database, display the table of existing objects, change the number of week from which the time will be counted down.</p>
+        <p>When viewing the page with timetable you can create lessons with specified lesson number, day and week number.</p>
       </div>
     </div>
   </div>
